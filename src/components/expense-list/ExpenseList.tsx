@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Expense } from '../../types';
+import { Expenses } from '../../types';
 import ExpenseTable from './ExpenseTable';
 
 interface ExpenseListProps {
   isLoading: boolean;
-  expenses: Expense[];
+  expenses: Expenses;
   errorMsg: string;
   handleRefresh: () => void;
 }
@@ -20,7 +20,7 @@ const ExpenseList: FC<ExpenseListProps> = ({
       <h2 className='my-3 text-center'>Expense List</h2>
       {isLoading && <p className='loading'>Loading...</p>}
       {errorMsg && <p className='error-msg'>{errorMsg}</p>}
-      {expenses.length > 0 ? (
+      {expenses&&expenses?.length > 0 ? (
         <ExpenseTable expenses={expenses} handleRefresh={handleRefresh} />
       ) : (
         !isLoading &&

@@ -6,6 +6,7 @@ export interface Expense {
   description: string;
 }
 
+export type Expenses = Expense [] | undefined
 export interface IProfile {
   first_name: string;
   last_name: string;

@@ -1,8 +1,7 @@
-import axios from 'axios';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useParams } from 'react-router-dom';
+import { useGetSingleExpensesQuery, useUpdateExpensesMutation } from '../../redux/api/api';
 import { Expense } from '../../types';
-import { BASE_API_URL } from '../../utils/constants';
 import ExpenseForm from '../expense-form/ExpenseForm';
 
 interface EditExpenseProps {
@@ -10,36 +9,16 @@ interface EditExpenseProps {
 }
 
 const EditExpense: FC<EditExpenseProps> = ({ handleRefresh }) => {
-  const [expense, setExpense] = useState(null);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+ 
+  const { id } = useParams<string>();
+  const[updateExpanse] = useUpdateExpensesMutation();
+  const {data:expense,isError,isLoading}  =  useGetSingleExpensesQuery(id||'');
 
-  const { id } = useParams();
-
-  useEffect(() => {
-    const getExpense = async () => {
-      try {
-        setIsLoading(true);
-        setErrorMsg('');
-        const { data } = await axios.get(`${BASE_API_URL}/expenses/${id}`);
-        setExpense(data);
-      } catch (error) {
-        console.log(error);
-        setErrorMsg(
-          'Error while getting expense information. Try again later.'
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getExpense();
-  }, [id]);
-
+  const  errorMsg = isError?'Error while getting expense information. Try again later.':''
+ 
   const handleSubmit = async (inputData: Expense): Promise<boolean> => {
     try {
-      const { data } = await axios.patch(`${BASE_API_URL}/expenses/${id}`, {
-        ...inputData
-      });
+      if(id) updateExpanse({id,updates:inputData})
       handleRefresh();
       return true;
     } catch (error) {

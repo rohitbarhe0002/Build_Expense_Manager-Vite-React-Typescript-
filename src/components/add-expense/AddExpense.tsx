@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { FC } from 'react';
+import { useAddExpensesMutation } from '../../redux/api/api';
 import { Expense } from '../../types';
-import { BASE_API_URL } from '../../utils/constants';
 import ExpenseForm from '../expense-form/ExpenseForm';
 
 interface AddExpenseProps {
@@ -9,15 +8,16 @@ interface AddExpenseProps {
 }
 
 const AddExpense: FC<AddExpenseProps> = ({ handleRefresh }) => {
+  const [addExpense]  = useAddExpensesMutation()
   const handleSubmit = async (inputData: Expense): Promise<boolean> => {
     try {
-      await axios.post(`${BASE_API_URL}/expenses`, {
-        ...inputData
-      });
-      handleRefresh();
+      addExpense(inputData);
+      // await axios.post(`${BASE_API_URL}/expenses`, {
+      //   ...inputData
+      // });
+      // handleRefresh();
       return true;
     } catch (error) {
-      console.log(error);
       return false;
     }
   };

@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import {
@@ -15,12 +14,12 @@ import {
 } from './DynamicImports';
 import { ModeContextProvider } from './context/ModeContext';
 import useLocalStorage from './custom-hooks/useLocalStorage';
-import { BASE_API_URL } from './utils/constants';
+import { useGetEpensesesQuery } from './redux/api/api';
 
 const App = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  // const [expenses, setExpenses] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [errorMsg, setErrorMsg] = useState('');
   const [refresh, setRefresh] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
   const [selectedTheme, setSelectedTheme] = useLocalStorage(
@@ -28,23 +27,8 @@ const App = () => {
     'light'
   );
 
-  useEffect(() => {
-    const getExpenses = async () => {
-      try {
-        setIsLoading(true);
-        setErrorMsg('');
-        const { data } = await axios.get(`${BASE_API_URL}/expenses`);
-        setExpenses(data);
-      } catch (error) {
-        console.log(error);
-        setErrorMsg('Error while getting list of expenses. Try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getExpenses();
-  }, [refresh]);
+  const {isError,isLoading,data:expenses} = useGetEpensesesQuery();
+  const errorMsg = isError?'error while getting expences':'';
 
   const handleRefresh = () => {
     setRefresh((refresh) => !refresh);

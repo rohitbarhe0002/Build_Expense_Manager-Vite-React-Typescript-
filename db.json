@@ -1,17 +1,10 @@
 {
   "expenses": [
     {
-      "expense_type": "card",
-      "expense_amount": "4500",
-      "description": "Shoes",
-      "expense_date": "2023-10-05",
-      "id": 2
-    },
-    {
       "expense_type": "cash",
-      "expense_amount": "5000",
-      "description": "Shopping",
-      "expense_date": "2023-11-06",
+      "expense_amount": "00000000",
+      "description": "kooping",
+      "expense_date": "2023-11-11",
       "id": 3
     },
     {
@@ -23,24 +16,10 @@
     },
     {
       "expense_type": "cash",
-      "expense_amount": "300",
+      "expense_amount": "800",
       "description": "Flight Travel",
       "expense_date": "2023-06-13",
       "id": 6
-    },
-    {
-      "expense_type": "card",
-      "expense_amount": "450",
-      "description": "Shopping",
-      "expense_date": "2023-11-07",
-      "id": 7
-    },
-    {
-      "expense_type": "cash",
-      "expense_amount": "4000",
-      "description": "Personal Expense",
-      "expense_date": "2022-07-13",
-      "id": 8
     }
   ],
   "profile": {

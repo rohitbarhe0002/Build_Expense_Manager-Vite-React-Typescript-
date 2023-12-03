@@ -10,6 +10,7 @@ import {
   getShortDescription
 } from '../../utils/functions';
 import './ExpensesTable.css';
+import { useDeleteExpensesMutation } from '../../redux/api/api';
 
 interface ExpenseTableProps {
   expenses: Expense[];
@@ -17,9 +18,11 @@ interface ExpenseTableProps {
 }
 
 const ExpenseTable: FC<ExpenseTableProps> = ({ expenses, handleRefresh }) => {
-  const [errorMsg, setErrorMsg] = useState('');
+  const [deleteExpenses] = useDeleteExpensesMutation()
+  const [errorMsg, setErrorMsg] = useState<string>('');
   const [deleteIndex, setDeleteIndex] = useState(-1);
   const { pathname } = useLocation();
+
   const handleDelete = async (id: number) => {
     const shouldDelete = window.confirm(
       'Are you sure you want to delete this expense?'
@@ -27,8 +30,8 @@ const ExpenseTable: FC<ExpenseTableProps> = ({ expenses, handleRefresh }) => {
     if (shouldDelete) {
       try {
         setErrorMsg('');
-        await axios.delete(`${BASE_API_URL}/expenses/${id}`);
-        handleRefresh();
+        deleteExpenses(id);
+        // handleRefresh();
       } catch (error) {
         console.log(error);
         setErrorMsg('Error while deleting the expense. Try again later.');

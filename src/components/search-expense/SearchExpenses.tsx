@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { Expense } from '../../types';
+import { Expenses } from '../../types';
 import ExpenseTable from '../expense-list/ExpenseTable';
 import './SearchExpenses.css';
 
 interface SearchExpensesProps {
-  expenses: Expense[];
+  expenses: Expenses;
   handleRefresh: () => void;
   isLoading: boolean;
   errorMsg: string;
@@ -20,18 +20,18 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [expenseType, setExpenseType] = useState('');
   const [expenseYear, setExpenseYear] = useState('');
-  const [sortBy, setSortBy] = useState('');
-  const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
+  const [sortBy, setSortBy] = useState('asc');
+  const [filteredExpenses, setFilteredExpenses] = useState<Expenses>([]);
 
   useEffect(() => {
     setFilteredExpenses(expenses);
-  }, [expenses]);
+  }, [expenses,searchTerm]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm.trim() !== '') {
       setFilteredExpenses(
-        expenses.filter((expense) =>
+        expenses &&  expenses.filter((expense) =>
           expense.description.toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
@@ -50,7 +50,7 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
         setExpenseType(value);
         if (value) {
           setFilteredExpenses(
-            expenses.filter((expense) => expense.expense_type === value)
+            expenses &&     expenses.filter((expense) => expense.expense_type === value)
           );
         } else {
           setFilteredExpenses(expenses);
@@ -64,7 +64,7 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
         const currentYear = new Date().getFullYear();
         if (value) {
           setFilteredExpenses(
-            expenses.filter((expense) =>
+            expenses&&   expenses.filter((expense) =>
               expense.expense_date.includes(
                 value === 'current_year'
                   ? `${currentYear}`
@@ -82,29 +82,13 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
       case 'sort_by':
         setSortBy(value);
         if (value) {
-          if (value === 'desc') {
-            setFilteredExpenses(
-              expenses.slice().sort((firstExpense, secondExpense) => {
-                if (firstExpense.expense_date < secondExpense.expense_date)
-                  return -1;
-                if (firstExpense.expense_date > secondExpense.expense_date)
-                  return 1;
-                return 0;
-              })
-            );
-          } else if (value === 'asc') {
-            setFilteredExpenses(
-              expenses.slice().sort((firstExpense, secondExpense) => {
-                if (firstExpense.expense_date < secondExpense.expense_date)
-                  return 1;
-                if (firstExpense.expense_date > secondExpense.expense_date)
-                  return -1;
-                return 0;
-              })
-            );
+          if (value === 'asc') {
+            setFilteredExpenses( expenses?.slice().sort((a, b) => new Date(b.expense_date).getTime() - new Date(a.expense_date).getTime()))
+          } else if(value === 'desc'){
+            setFilteredExpenses( expenses?.slice().sort((a, b) => new Date(a.expense_date).getTime() - new Date(b.expense_date).getTime()))
           }
-        } else {
-          setFilteredExpenses(expenses);
+        }else{
+          setFilteredExpenses(expenses)
         }
         setExpenseType('');
         setExpenseYear('');
@@ -165,7 +149,7 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
                 })
               }
             >
-              <option value=''>Select Year</option>
+              <option >Select Year</option>
               <option value='current_year'>Current Year</option>
               <option value='previous_year'>Previous Year</option>
             </Form.Select>
@@ -197,7 +181,7 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
       )}
       {!isLoading &&
         !errorMsg &&
-        (filteredExpenses.length > 0 ? (
+        (filteredExpenses &&filteredExpenses.length > 0 ? (
           <ExpenseTable
             expenses={filteredExpenses}
             handleRefresh={handleRefresh}
