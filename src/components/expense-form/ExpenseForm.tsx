@@ -38,9 +38,8 @@ const ExpenseForm: FC<ExpenseFormProps> = ({ onSubmitForm, expense }) => {
     const isSuccess = await onSubmitForm(data);
     if (isSuccess) {
       if (!expense) {
-        // reset for add expense
         reset();
-      }
+      };
       setErrorMsg('');
       setSuccesMsg(`Expense ${expense ? 'updated' : 'added'} successfully.`);
       setTimeout(() => {

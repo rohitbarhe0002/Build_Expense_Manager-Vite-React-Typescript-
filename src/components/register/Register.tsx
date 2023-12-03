@@ -3,14 +3,10 @@ import { FC, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { userType } from '../../types';
 import { BASE_API_URL } from '../../utils/constants';
 import './Register.css';
 
-interface IProfile {
-  email: string;
-  password: string;
-  cpassword: string;
-}
 
 interface RegisterProps {
   setIsLoggedIn: (data: boolean) => void;
@@ -26,9 +22,9 @@ const Register: FC<RegisterProps> = ({ setIsLoggedIn }) => {
     reset,
     watch,
     formState: { errors }
-  } = useForm<IProfile>();
+  } = useForm<userType>();
 
-  const onSubmit = async (data: IProfile) => {
+  const onSubmit = async (data: userType) => {
     try {
       setErrorMsg('');
       setSuccesMsg('');

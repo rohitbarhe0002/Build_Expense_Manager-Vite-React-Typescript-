@@ -20,6 +20,7 @@ const ExpenseList: FC<ExpenseListProps> = ({
       <h2 className='my-3 text-center'>Expense List</h2>
       {isLoading && <p className='loading'>Loading...</p>}
       {errorMsg && <p className='error-msg'>{errorMsg}</p>}
+      
       {expenses&&expenses?.length > 0 ? (
         <ExpenseTable expenses={expenses} handleRefresh={handleRefresh} />
       ) : (

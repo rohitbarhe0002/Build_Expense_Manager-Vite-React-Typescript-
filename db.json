@@ -1,29 +1,15 @@
 {
   "expenses": [
     {
-      "expense_type": "cash",
+      "expense_type": "card",
       "expense_amount": "00000000",
       "description": "kooping",
       "expense_date": "2023-11-11",
       "id": 3
-    },
-    {
-      "expense_type": "cash",
-      "expense_amount": "1000",
-      "description": "Grocery",
-      "expense_date": "2023-10-18",
-      "id": 5
-    },
-    {
-      "expense_type": "cash",
-      "expense_amount": "800",
-      "description": "Flight Travel",
-      "expense_date": "2023-06-13",
-      "id": 6
     }
   ],
   "profile": {
-    "first_name": "Mike",
+    "first_name": "Midfkesdfgh",
     "last_name": "Tyson",
     "email": "mike@example.com"
   },
@@ -32,6 +18,11 @@
       "email": "mike@example.com",
       "password": "mike@123",
       "id": 1
+    },
+    {
+      "email": "rohitbarche99@gmail.com",
+      "password": "mike@123sdf",
+      "id": 2
     }
   ]
 }

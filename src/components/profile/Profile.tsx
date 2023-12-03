@@ -1,15 +1,11 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../redux/api/profile/api';
 import { IProfile } from '../../types';
-import { BASE_API_URL } from '../../utils/constants';
 
 const Profile = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
-  const [profileInfo, setProfileInfo] = useState<IProfile | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string>('');
   const {
     register,
     reset,
@@ -17,24 +13,11 @@ const Profile = () => {
     formState: { errors }
   } = useForm<IProfile>();
 
-  useEffect(() => {
-    const getProfileInfo = async () => {
-      try {
-        setIsLoading(true);
-        const { data } = await axios.get(`${BASE_API_URL}/profile`);
-        setProfileInfo(data);
-      } catch (error) {
-        setErrorMsg(
-          'Error while getting profile information. Try again later.'
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const { isError, isLoading, data: profileInfo } = useGetProfileQuery();
+  const [updateProfile] = useUpdateProfileMutation();
 
-    getProfileInfo();
-  }, []);
-
+  const errorMsg = isError ? 'Error while getting profile information. Try again later.' : ''
+  
   useEffect(() => {
     reset({
       first_name: profileInfo?.first_name || '',
@@ -44,16 +27,14 @@ const Profile = () => {
   }, [profileInfo]);
 
   const onSubmit = async (data: IProfile) => {
-    setErrorMsg('');
     try {
-      await axios.patch(`${BASE_API_URL}/profile`, data);
+      updateProfile(data)
       setSuccessMsg('Profile is updated successfully.');
       setTimeout(() => {
         setSuccessMsg('');
       }, 2000);
     } catch (error) {
       setSuccessMsg('');
-      setErrorMsg('Error while updating profile. Try again later.');
     }
   };
 

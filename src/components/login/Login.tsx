@@ -3,13 +3,9 @@ import { FC, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { userType } from '../../types';
 import { BASE_API_URL } from '../../utils/constants';
 import './Login.css';
-
-interface IProfile {
-  email: string;
-  password: string;
-}
 
 interface LoginProps {
   setIsLoggedIn: (data: boolean) => void;
@@ -22,9 +18,9 @@ const Login: FC<LoginProps> = ({ setIsLoggedIn }) => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<IProfile>();
+  } = useForm<userType>();
 
-  const onSubmit = async (data: IProfile) => {
+  const onSubmit = async (data: userType) => {
     try {
       setErrorMsg('');
       const { data: response } = await axios.get(

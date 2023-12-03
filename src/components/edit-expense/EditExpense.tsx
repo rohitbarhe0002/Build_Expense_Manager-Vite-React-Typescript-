@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetSingleExpensesQuery, useUpdateExpensesMutation } from '../../redux/api/api';
+import { useGetSingleExpensesQuery, useUpdateExpensesMutation } from '../../redux/api/espenses/api';
 import { Expense } from '../../types';
 import ExpenseForm from '../expense-form/ExpenseForm';
 
@@ -18,11 +18,11 @@ const EditExpense: FC<EditExpenseProps> = ({ handleRefresh }) => {
  
   const handleSubmit = async (inputData: Expense): Promise<boolean> => {
     try {
-      if(id) updateExpanse({id,updates:inputData})
+      if(id) await updateExpanse({id,updates:inputData});
       handleRefresh();
       return true;
     } catch (error) {
-      console.log(error);
+      console.log(error,"error")
       return false;
     }
   };

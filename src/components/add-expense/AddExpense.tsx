@@ -1,14 +1,13 @@
 import { FC } from 'react';
-import { useAddExpensesMutation } from '../../redux/api/api';
+import { useAddExpensesMutation } from '../../redux/api/espenses/api';
 import { Expense } from '../../types';
 import ExpenseForm from '../expense-form/ExpenseForm';
-
 interface AddExpenseProps {
   handleRefresh: () => void;
 }
 
 const AddExpense: FC<AddExpenseProps> = ({ handleRefresh }) => {
-  const [addExpense]  = useAddExpensesMutation()
+  const [addExpense,{isError}]  = useAddExpensesMutation();
   const handleSubmit = async (inputData: Expense): Promise<boolean> => {
     try {
       addExpense(inputData);
@@ -24,7 +23,7 @@ const AddExpense: FC<AddExpenseProps> = ({ handleRefresh }) => {
   return (
     <div className='main-content'>
       <h2 className='my-3 text-center'>Add Expense</h2>
-      <ExpenseForm onSubmitForm={handleSubmit} />
+      <ExpenseForm onSubmitForm={handleSubmit}  />
     </div>
   );
 };

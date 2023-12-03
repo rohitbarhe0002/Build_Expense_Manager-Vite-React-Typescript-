@@ -14,12 +14,9 @@ import {
 } from './DynamicImports';
 import { ModeContextProvider } from './context/ModeContext';
 import useLocalStorage from './custom-hooks/useLocalStorage';
-import { useGetEpensesesQuery } from './redux/api/api';
+import { useGetEpensesesQuery } from './redux/api/espenses/api';
 
 const App = () => {
-  // const [expenses, setExpenses] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [errorMsg, setErrorMsg] = useState('');
   const [refresh, setRefresh] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
   const [selectedTheme, setSelectedTheme] = useLocalStorage(

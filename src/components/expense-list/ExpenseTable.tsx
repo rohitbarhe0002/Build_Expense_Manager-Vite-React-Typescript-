@@ -10,7 +10,7 @@ import {
   getShortDescription
 } from '../../utils/functions';
 import './ExpensesTable.css';
-import { useDeleteExpensesMutation } from '../../redux/api/api';
+import { useDeleteExpensesMutation } from '../../redux/api/espenses/api';
 
 interface ExpenseTableProps {
   expenses: Expense[];
