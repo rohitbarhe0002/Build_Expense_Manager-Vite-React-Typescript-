@@ -71,7 +71,7 @@ const Register: FC<RegisterProps> = ({ setIsLoggedIn }) => {
               placeholder='Enter your email'
             />
             {errors.email && (
-              <p className='error-msg'>{errors.email.message}</p>
+              <p className='error-msg'>{errors?.email.message}</p>
             )}
           </Form.Group>
           <Form.Group className='mb-3' controlId='password'>
