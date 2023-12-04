@@ -11,10 +11,6 @@ const AddExpense: FC<AddExpenseProps> = ({ handleRefresh }) => {
   const handleSubmit = async (inputData: Expense): Promise<boolean> => {
     try {
       addExpense(inputData);
-      // await axios.post(`${BASE_API_URL}/expenses`, {
-      //   ...inputData
-      // });
-      // handleRefresh();
       return true;
     } catch (error) {
       return false;

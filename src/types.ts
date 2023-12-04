@@ -12,3 +12,9 @@ export interface IProfile {
   last_name: string;
   email: string;
 }
+
+export type userType = {
+  email:string,
+  password:string,
+  cpassword?:string
+}

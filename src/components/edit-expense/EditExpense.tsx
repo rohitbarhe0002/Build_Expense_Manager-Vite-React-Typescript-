@@ -18,7 +18,7 @@ const EditExpense: FC<EditExpenseProps> = ({ handleRefresh }) => {
  
   const handleSubmit = async (inputData: Expense): Promise<boolean> => {
     try {
-      if(id) await updateExpanse({id,updates:inputData});
+      if(id) await updateExpanse({id,data:inputData});
       handleRefresh();
       return true;
     } catch (error) {

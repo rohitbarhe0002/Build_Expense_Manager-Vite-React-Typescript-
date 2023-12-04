@@ -69,13 +69,13 @@ const ExpenseTable: FC<ExpenseTableProps> = ({ expenses, handleRefresh }) => {
                   <td>{index + 1}</td>
                   <td className='expense-item'>{expense_type}</td>
                   <td className='expense-item'>
-                    {getFormattedDate(expense_date)}
+                    {expense_date&&getFormattedDate(expense_date)}
                   </td>
                   <td className='expense-item'>
-                    {getFormattedPrice(expense_amount)}
+                    {expense_amount&&getFormattedPrice(expense_amount)}
                   </td>
                   <td className='expense-item' title={description}>
-                    {getShortDescription(description)}
+                    {description&&getShortDescription(description)}
                   </td>
                   <td>
                     <Link to={`/edit/${id}`} state={pathname}>
