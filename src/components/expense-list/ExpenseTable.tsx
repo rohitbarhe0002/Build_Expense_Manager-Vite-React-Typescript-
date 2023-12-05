@@ -10,16 +10,21 @@ import {
   getShortDescription
 } from '../../utils/functions';
 import './ExpensesTable.css';
+import { deleteExpense } from '../../redux/action/expenseAction';
+import { useDispatch } from 'react-redux';
 
 interface ExpenseTableProps {
   expenses: Expense[];
   handleRefresh: () => void;
 }
 
+
 const ExpenseTable: FC<ExpenseTableProps> = ({ expenses, handleRefresh }) => {
+  const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState('');
-  const [deleteIndex, setDeleteIndex] = useState(-1);
+  const [deleteIndex, setDeleteIndex] = useState<number>(-1);
   const { pathname } = useLocation();
+
   const handleDelete = async (id: number) => {
     const shouldDelete = window.confirm(
       'Are you sure you want to delete this expense?'
@@ -27,7 +32,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({ expenses, handleRefresh }) => {
     if (shouldDelete) {
       try {
         setErrorMsg('');
-        await axios.delete(`${BASE_API_URL}/expenses/${id}`);
+        dispatch(deleteExpense(id))
         handleRefresh();
       } catch (error) {
         console.log(error);

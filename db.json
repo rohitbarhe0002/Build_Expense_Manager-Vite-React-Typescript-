@@ -1,17 +1,17 @@
 {
   "expenses": [
     {
-      "expense_type": "card",
+      "expense_type": "cash",
       "expense_amount": "4500",
       "description": "Shoes",
       "expense_date": "2023-10-05",
       "id": 2
     },
     {
-      "expense_type": "cash",
-      "expense_amount": "5000",
-      "description": "Shopping",
-      "expense_date": "2023-11-06",
+      "expense_type": "card",
+      "expense_amount": "59000",
+      "description": "nocking",
+      "expense_date": "2023-11-23",
       "id": 3
     },
     {
@@ -34,19 +34,12 @@
       "description": "Shopping",
       "expense_date": "2023-11-07",
       "id": 7
-    },
-    {
-      "expense_type": "cash",
-      "expense_amount": "4000",
-      "description": "Personal Expense",
-      "expense_date": "2022-07-13",
-      "id": 8
     }
   ],
   "profile": {
     "first_name": "Mike",
     "last_name": "Tyson",
-    "email": "mike@example.com"
+    "email": "mike@exampleop.com"
   },
   "users": [
     {

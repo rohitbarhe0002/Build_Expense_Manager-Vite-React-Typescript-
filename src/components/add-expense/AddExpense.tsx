@@ -1,19 +1,18 @@
-import axios from 'axios';
 import { FC } from 'react';
+import { useDispatch } from 'react-redux';
+import { addExpense } from '../../redux/action/expenseAction';
 import { Expense } from '../../types';
-import { BASE_API_URL } from '../../utils/constants';
 import ExpenseForm from '../expense-form/ExpenseForm';
-
 interface AddExpenseProps {
   handleRefresh: () => void;
 }
 
 const AddExpense: FC<AddExpenseProps> = ({ handleRefresh }) => {
+  const dispatch = useDispatch()
   const handleSubmit = async (inputData: Expense): Promise<boolean> => {
+    
     try {
-      await axios.post(`${BASE_API_URL}/expenses`, {
-        ...inputData
-      });
+      dispatch(addExpense(inputData));
       handleRefresh();
       return true;
     } catch (error) {
@@ -21,6 +20,7 @@ const AddExpense: FC<AddExpenseProps> = ({ handleRefresh }) => {
       return false;
     }
   };
+
   return (
     <div className='main-content'>
       <h2 className='my-3 text-center'>Add Expense</h2>

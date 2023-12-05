@@ -24,7 +24,7 @@ const ExpenseList: FC<ExpenseListProps> = ({
         <ExpenseTable expenses={expenses} handleRefresh={handleRefresh} />
       ) : (
         !isLoading &&
-        !errorMsg && <h4 className='error-msg'>No matching expenses found.</h4>
+        !errorMsg && <h4 className='error-msg'>No matching expenshvbjes found.</h4>
       )}
     </div>
   );

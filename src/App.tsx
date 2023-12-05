@@ -1,7 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-
 import {
   AddExpense,
   EditExpense,
@@ -15,36 +14,42 @@ import {
 } from './DynamicImports';
 import { ModeContextProvider } from './context/ModeContext';
 import useLocalStorage from './custom-hooks/useLocalStorage';
-import { BASE_API_URL } from './utils/constants';
-
+import { fetchExpenses } from './redux/action/expenseAction';
 const App = () => {
-  const [expenses, setExpenses] = useState([]);
+  const dispatch = useDispatch();
+  const {expenses} = useSelector((state:any)=>state);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [refresh, setRefresh] = useState(false);
+
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
+
   const [selectedTheme, setSelectedTheme] = useLocalStorage(
     'selectedTheme',
     'light'
   );
 
-  useEffect(() => {
-    const getExpenses = async () => {
-      try {
-        setIsLoading(true);
-        setErrorMsg('');
-        const { data } = await axios.get(`${BASE_API_URL}/expenses`);
-        setExpenses(data);
-      } catch (error) {
-        console.log(error);
-        setErrorMsg('Error while getting list of expenses. Try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const getExpenses = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       setErrorMsg('');
+  //       const { data } = await axios.get(`${BASE_API_URL}/expenses`);
+  //       setExpenses(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //       setErrorMsg('Error while getting list of expenses. Try again later.');
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    getExpenses();
-  }, [refresh]);
+  //   getExpenses();
+  // }, [refresh]);
+
+  useEffect(()=>{
+    dispatch(fetchExpenses());
+  },[refresh])
 
   const handleRefresh = () => {
     setRefresh((refresh) => !refresh);
