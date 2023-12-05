@@ -11,7 +11,8 @@ import {
 } from '../../utils/functions';
 import './ExpensesTable.css';
 import { deleteExpense } from '../../redux/action/expenseAction';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/store';
 
 interface ExpenseTableProps {
   expenses: Expense[];
@@ -21,7 +22,7 @@ interface ExpenseTableProps {
 
 const ExpenseTable: FC<ExpenseTableProps> = ({ expenses, handleRefresh }) => {
   const dispatch = useDispatch();
-  const [errorMsg, setErrorMsg] = useState('');
+  const {errorMsg} = useSelector((state:RootState)=>state.errorHandling);
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
   const { pathname } = useLocation();
 
@@ -31,12 +32,11 @@ const ExpenseTable: FC<ExpenseTableProps> = ({ expenses, handleRefresh }) => {
     );
     if (shouldDelete) {
       try {
-        setErrorMsg('');
+
         dispatch(deleteExpense(id))
         handleRefresh();
       } catch (error) {
         console.log(error);
-        setErrorMsg('Error while deleting the expense. Try again later.');
       }
     }
     setDeleteIndex(-1);

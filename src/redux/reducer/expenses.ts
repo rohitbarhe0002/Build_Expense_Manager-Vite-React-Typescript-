@@ -1,17 +1,24 @@
-// src/reducers/productReducer.js
-
-import { useEffect } from 'react';
 import { Expense } from '../../types';
 import {
-    FETCH_EXPENSE_SUCCESS,
     ADD_EXPENSES_SUCCESS,
-    UPDATE_EXPENSES_SUCCESS,
+    FETCH_EXPENSE_SUCCESS,
     FETCH_SINGLE_EXPENSE_SUCCESS,
-  } from '../actionTypes'
+    UPDATE_EXPENSES_SUCCESS,
+} from '../actionTypes';
   
-  const initialState = {
+
+
+interface State {
+    expenses: Expense[];
+    expense: Expense;
+    errorMsg:string;
+    loading:boolean
+  }
+  const initialState : State = {
     expenses:[] ,
-    expense:[]
+    expense:{} as Expense,
+    errorMsg:'',
+    loading:false,
   };
   
   const expenseReducer = (state = initialState, action:any) => {
@@ -41,13 +48,7 @@ import {
           expense.id === action.payload.id ? { ...expense, ...action.payload } : expense
           ),
         };
-    //   case DELETE_PRODUCT_SUCCESS:
-    //     return {
-    //       ...state,
-    //       products: state.products.filter(
-    //         (product) => product.id !== action.payload
-    //       ),
-    //     };
+
       default:
         return state;
     }

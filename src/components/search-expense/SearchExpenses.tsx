@@ -18,9 +18,12 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
   errorMsg
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [expenseType, setExpenseType] = useState('');
-  const [expenseYear, setExpenseYear] = useState('');
-  const [sortBy, setSortBy] = useState('');
+  const [searchFilters,setSearchFiletrs] = useState<any>({
+    expenseType:'',
+    expenseYear:'',
+    sortBy:''
+  })
+
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
     const { type, value } = selectedOption;
     switch (type) {
       case 'expense_type':
-        setExpenseType(value);
+        setSearchFiletrs({expenseType:value})
         if (value) {
           setFilteredExpenses(
             expenses.filter((expense) => expense.expense_type === value)
@@ -55,12 +58,12 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
         } else {
           setFilteredExpenses(expenses);
         }
-        setExpenseYear('');
-        setSortBy('');
+        setSearchFiletrs({expenseYear:''});
+        setSearchFiletrs({sortBy:''});
         setSearchTerm('');
         break;
       case 'expense_date':
-        setExpenseYear(value);
+        setSearchFiletrs({expenseYear:value})
         const currentYear = new Date().getFullYear();
         if (value) {
           setFilteredExpenses(
@@ -75,41 +78,25 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
         } else {
           setFilteredExpenses(expenses);
         }
-        setExpenseType('');
-        setSortBy('');
+        setSearchFiletrs({expenseType:''})
+        setSearchFiletrs({sortBy:''})
         setSearchTerm('');
         break;
-      case 'sort_by':
-        setSortBy(value);
-        if (value) {
-          if (value === 'desc') {
-            setFilteredExpenses(
-              expenses.slice().sort((firstExpense, secondExpense) => {
-                if (firstExpense.expense_date < secondExpense.expense_date)
-                  return -1;
-                if (firstExpense.expense_date > secondExpense.expense_date)
-                  return 1;
-                return 0;
-              })
-            );
-          } else if (value === 'asc') {
-            setFilteredExpenses(
-              expenses.slice().sort((firstExpense, secondExpense) => {
-                if (firstExpense.expense_date < secondExpense.expense_date)
-                  return 1;
-                if (firstExpense.expense_date > secondExpense.expense_date)
-                  return -1;
-                return 0;
-              })
-            );
+        case 'sort_by':
+          setSearchFiletrs({sortBy:value})
+          if (value) {
+            if (value === 'asc') {
+              setFilteredExpenses( expenses?.slice().sort((expeneseA:Expense, expeneseB:Expense) => new Date(expeneseB.expense_date).getTime() - new Date(expeneseA.expense_date).getTime()))
+            } else if(value === 'desc'){
+              setFilteredExpenses( expenses?.slice().sort((expeneseA:Expense, expeneseB:Expense) => new Date(expeneseA.expense_date).getTime() - new Date(expeneseB.expense_date).getTime()))
+            }
+          }else{
+            setFilteredExpenses(expenses)
           }
-        } else {
-          setFilteredExpenses(expenses);
-        }
-        setExpenseType('');
-        setExpenseYear('');
-        setSearchTerm('');
-        break;
+          setSearchFiletrs({expenseType:''});
+          setSearchFiletrs({expenseYear:''});
+          setSearchTerm('');
+          break;
       default:
         break;
     }
@@ -126,9 +113,9 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
                 placeholder='Enter description to search and press enter key'
                 value={searchTerm}
                 onChange={(event) => {
-                  setExpenseType('');
-                  setExpenseYear('');
-                  setSortBy('');
+                  setSearchFiletrs({sortBy:''})
+                  setSearchFiletrs({expenseType:''})
+                  setSearchFiletrs({expenseYear:''})
                   setSearchTerm(event.target.value);
                 }}
               />
@@ -140,7 +127,7 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
             <Form.Label>Expense Type</Form.Label>
             <Form.Select
               aria-label='Select Expense Type'
-              value={expenseType}
+              value={searchFilters.expenseType}
               onChange={(event) =>
                 handleFilterChange({
                   type: 'expense_type',
@@ -157,7 +144,7 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
             <Form.Label>Expense Year</Form.Label>
             <Form.Select
               aria-label='Select Year'
-              value={expenseYear}
+              value={searchFilters.expenseYear}
               onChange={(event) =>
                 handleFilterChange({
                   type: 'expense_date',
@@ -174,7 +161,7 @@ const SearchExpenses: FC<SearchExpensesProps> = ({
             <Form.Label>Sort By</Form.Label>
             <Form.Select
               aria-label='Select Sort By'
-              value={sortBy}
+              value={searchFilters.sortBy}
               onChange={(event) =>
                 handleFilterChange({
                   type: 'sort_by',

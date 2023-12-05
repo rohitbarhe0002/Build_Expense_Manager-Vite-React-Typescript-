@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { RootState } from '../../redux/store/store';
 import { Expense } from '../../types';
 
 interface ExpenseFormProps {
@@ -11,7 +13,8 @@ interface ExpenseFormProps {
 
 const ExpenseForm: FC<ExpenseFormProps> = ({ onSubmitForm, expense }) => {
   const [succesMsg, setSuccesMsg] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
+ const {errorMsg} = useSelector((state:RootState)=>state.errorHandling);
+  
   const {
     register,
     handleSubmit,
@@ -38,10 +41,8 @@ const ExpenseForm: FC<ExpenseFormProps> = ({ onSubmitForm, expense }) => {
     const isSuccess = await onSubmitForm(data);
     if (isSuccess) {
       if (!expense) {
-        // reset for add expense
         reset();
       }
-      setErrorMsg('');
       setSuccesMsg(`Expense ${expense ? 'updated' : 'added'} successfully.`);
       setTimeout(() => {
         setSuccesMsg('');
@@ -53,11 +54,10 @@ const ExpenseForm: FC<ExpenseFormProps> = ({ onSubmitForm, expense }) => {
       }, 2000);
     } else {
       setSuccesMsg('');
-      setErrorMsg(
         `Error while ${
           expense ? 'updating' : 'adding'
         } expense. Try again later.`
-      );
+ 
     }
   };
 

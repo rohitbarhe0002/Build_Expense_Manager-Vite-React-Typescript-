@@ -15,53 +15,38 @@ import {
 import { ModeContextProvider } from './context/ModeContext';
 import useLocalStorage from './custom-hooks/useLocalStorage';
 import { fetchExpenses } from './redux/action/expenseAction';
+import { RootState } from './redux/store/store';
+
 const App = () => {
   const dispatch = useDispatch();
-  const {expenses} = useSelector((state:any)=>state);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [refresh, setRefresh] = useState(false);
+  const {expenses} = useSelector((state:RootState)=>state.expenses);
+  const {isLoading,errorMsg} = useSelector((state:RootState)=>state.errorHandling);
 
+
+  const [refresh, setRefresh] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
-
   const [selectedTheme, setSelectedTheme] = useLocalStorage(
     'selectedTheme',
     'light'
   );
 
-  // useEffect(() => {
-  //   const getExpenses = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       setErrorMsg('');
-  //       const { data } = await axios.get(`${BASE_API_URL}/expenses`);
-  //       setExpenses(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //       setErrorMsg('Error while getting list of expenses. Try again later.');
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   getExpenses();
-  // }, [refresh]);
-
+ 
   useEffect(()=>{
     dispatch(fetchExpenses());
-  },[refresh])
+  },[refresh]);
 
   const handleRefresh = () => {
     setRefresh((refresh) => !refresh);
   };
 
+ 
   return (
     <ModeContextProvider
       selectedTheme={selectedTheme}
       setSelectedTheme={setSelectedTheme}
     >
       <BrowserRouter>
-        <React.Suspense fallback={<p className='loading'>Loading...</p>}>
+        <React.Suspense fallback={<p className='loading'>Loading..fyguhi.</p>}>
           <Layout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}>
             <Routes>
               <Route
